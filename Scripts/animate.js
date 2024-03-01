@@ -1,31 +1,41 @@
-//Animate a cube to rotate around: x, and y axis
-// function animate_cube() {
-//     requestAnimationFrame(animate_cube);
-//     cube.rotation.x += 0.04;
-//     cube.rotation.y += 0.04;
-//     cube.position.z = 3;
-//     renderer.render(scene, camera);
-// }
 
-const speed = 0.005;
+var noise = new Noise();
+let time = 0;
 
-//Animate a sphere to rotate around x axis and transform along y, z axis
-function animate_earth() {
-    requestAnimationFrame(animate_earth);
-    earth.rotation.y += speed;
 
-    renderer.render(scene, camera);
+function animate(){
+    requestAnimationFrame(animate);
+    time+=0.001;
+    updatePlaneWithNoise();
+    renderer.render(scene, camera)
 }
 
-const d = 5;
-var alpha = 0;
-var dalpha = 2*Math.PI/1000;
 
-function animate_moon(){
-    requestAnimationFrame(animate_moon);
-    moon.position.y = 1;
-    alpha +=dalpha;
-    moon.position.x = d*Math.cos(alpha);
-    moon.position.z = d*Math.sin(alpha);
-    renderer.render(scene, camera);
-}
+const updatePlaneWithNoise = () => {
+    const vertices = plane.geometry.attributes.position.array;
+    const colors = plane.geometry.attributes.color.array;
+
+    for (let i = 0; i < vertices.length; i += 3) {
+        const x = vertices[i];
+        const y = vertices[i + 1];
+
+        // Use noise to displace the vertices over time
+        const noiseValue = noise.simplex2(x * 0.1, y * 0.1 + time) * 2;
+        vertices[i + 2] = noiseValue;
+
+        // Map the noise value to a color gradient (Red at minimum, Blue at maximum)
+        const color = new THREE.Color();
+        const normalizedValue = (noiseValue + 1) / 2; // Normalize noise value to range [0, 1]
+        const redComponent = normalizedValue; // Red component varies based on noise value
+        color.setRGB(redComponent, 0, 1 - redComponent); // Green and blue are set accordingly
+        colors[i] = color.r;
+        colors[i + 1] = color.g;
+        colors[i + 2] = color.b;
+    }
+
+    // Update the buffer geometry
+    plane.geometry.attributes.position.needsUpdate = true;
+    plane.geometry.attributes.color.needsUpdate = true;
+};
+
+

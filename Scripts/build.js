@@ -1,33 +1,16 @@
-/* global THREE, scene, renderer, camera */
+function createPlane(w, h, ws, hs, x, y, z, hexColour) {
+    const geometry = new THREE.PlaneBufferGeometry(w, h, ws, hs); // Use PlaneBufferGeometry
+    geometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(geometry.attributes.position.array.length), 3)); // Add color attribute
+    
+    const material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors, side: THREE.DoubleSide, wireframe: true });
+    const plane = new THREE.Mesh(geometry, material);
+    plane.position.set(x, y, z);
 
-
-
-//Create a cube using variable w, h, d
-// function createCube(w, h, d, r, g, b) {
-//     var material = new THREE.MeshBasicMaterial();
-//     material.color = new THREE.Color(r, g, b);
-//     material.wireframe = true;
-//     var geometry_cube = new THREE.BoxGeometry(w, h, d);
-//     var cube = new THREE.Mesh(geometry_cube, material);
-//     return cube;
-// }
-
-//Create a sphere using variable radius, vertical lines, horizontal lines
-function createSphere(radius, hlines, vlines, hex) {
-    var material = new THREE.MeshBasicMaterial();
-    material.color = new THREE.Color(hex);
-    material.wireframe = true;
-    var geometry_sphere = new THREE.SphereGeometry(radius, hlines, vlines);
-    var sphere = new THREE.Mesh(geometry_sphere, material);
-    return sphere;
+    return plane;
 }
 
-// var cube = createCube(2, 2, 2, 0, 1, 0);
-var earth = createSphere(3, 32, 32, "#3cb371");
-var moon = createSphere(1, 28, 28, "#C0C0C0");
+var plane = createPlane(100,100,100,100,0,20,0, "red");
 
 function addShapes() {
-    // scene.add(cube);
-    scene.add(earth);
-    scene.add(moon);
+    scene.add(plane);
 }
