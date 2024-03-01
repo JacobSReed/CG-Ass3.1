@@ -1,37 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="js/three.js"></script>
-        <script src="js/OrbitControls.js"></script>
-        <script src="js/Noise.js"></script>
-        <link rel="stylesheet" href="css/layout.css">
-        <title>CG Labs</title>
-    </head>
+<head>
+    <!-- Your existing head content -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/Noise.js"></script>
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        #controls {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <title>3.1 Assessment</title>
+</head>
 
-    <body>
-        <div id="info">
-            <H1>14162996 - Assessment 3.1</H1>
-        </div>
-        <script type='x-shader/x-vertex' id='vertexShader'>
-            attribute float alpha; varying float vAlpha; void main() { vAlpha = alpha; vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 ); gl_PointSize = 2.0; gl_Position = projectionMatrix * mvPosition; }
-        </script>
+<body>
+    <div id="info">
+        <H1>14162996 - Assessment 3.1</H1>
+    </div>
 
-        <script type='x-shader/x-fragment' id='fragmentShader'>
-            uniform vec3 color; varying float vAlpha; void main() { gl_FragColor = vec4( color, vAlpha ); }
-        </script>
-        
+    <div id="controls">
+        <label for="timeRateInput">Scroll Rate:</label>
+        <input type="text" id="timeRateInput" value="0.001">
+        <br>
+        <label for="startColorInput">Deep Color:</label>
+        <input type="text" id="startColorInput" value="#FF0000">
+        <br>
+        <label for="endColorInput">High Color:</label>
+        <input type="text" id="endColorInput" value="#0000FF">
+        <br>
+        <label for="noiseScaleInput">Noise Scale:</label>
+        <input type="text" id="noiseScaleInput" value="2">
+        <br>
+        <label for="wireframeCheckbox">Wireframe Mode:</label>
+        <input type="checkbox" id="wireframeCheckbox" checked>
+        <br>
+        <button onclick="updateParameters()">Update Parameters</button>
+    </div>
 
-        <script src="scripts/setup.js"></script>
-        <script src="scripts/build.js"></script>
-        <script src="scripts/animate.js"></script>
-        <script src="scripts/run.js"></script>
+    <script type='x-shader/x-vertex' id='vertexShader'>
+        attribute float alpha; varying float vAlpha; void main() { vAlpha = alpha; vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 ); gl_PointSize = 2.0; gl_Position = projectionMatrix * mvPosition; }
+    </script>
 
-        
+    <script type='x-shader/x-fragment' id='fragmentShader'>
+        uniform vec3 color; varying float vAlpha; void main() { gl_FragColor = vec4( color, vAlpha ); }
+    </script>
 
-    </body>
+    <script src="scripts/setup.js"></script>
+    <script src="scripts/build.js"></script>
+    <script src="scripts/animate.js"></script>
+    <script src="scripts/run.js"></script>
+
+</body>
 
 </html>

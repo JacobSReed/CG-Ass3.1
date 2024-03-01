@@ -4,12 +4,13 @@ let time = 0;
 var timeRate = 0.001;
 var startColour = "#FF0000";
 var endColour = "#0000FF";
+var noiseScale = 2;
 
 function animate() {
-    requestAnimationFrame(animate);
     time += timeRate;
-    updatePlaneWithNoise(startColour, endColour); // Example hex values for red and blue
+    updatePlaneWithNoise(startColour, endColour);
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
 }
 
 const hexToThreeColor = hex => {
@@ -28,7 +29,7 @@ const updatePlaneWithNoise = (startHexColour, endHexColour) => {
     for (let i = 0; i < vertices.length; i += 3) {
         const x = vertices[i];
         const y = vertices[i + 1];
-        const noiseValue = noise.simplex2(x * 0.1, y * 0.1 + time) * 2;
+        const noiseValue = noise.simplex2(x * 0.1, y * 0.1 + time) * noiseScale;
         vertices[i + 2] = noiseValue;
 
         // Map the noise value to a color gradient using lerp
@@ -40,8 +41,6 @@ const updatePlaneWithNoise = (startHexColour, endHexColour) => {
         colors[i + 1] = color.g;
         colors[i + 2] = color.b;
     }
-
-    // Update the buffer geometry
     plane.geometry.attributes.position.needsUpdate = true;
     plane.geometry.attributes.color.needsUpdate = true;
 };
